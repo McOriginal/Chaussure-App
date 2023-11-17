@@ -1,9 +1,8 @@
-import 'package:chaussure/authentication/connexion_page.dart';
-import 'package:chaussure/authentication/services/auth_services.dart';
 import 'package:chaussure/data/dummy_data.dart';
 import 'package:chaussure/models/models.dart';
 import 'package:chaussure/theme/custom_app_theme.dart';
 import 'package:chaussure/utils/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class UserProfileView extends StatefulWidget {
@@ -16,7 +15,6 @@ class UserProfileView extends StatefulWidget {
 class _UserProfileViewState extends State<UserProfileView> {
   // ************
   int statusCurrentIndex = 0;
-  AuthClass authClass = AuthClass();
   // ************
   @override
   Widget build(BuildContext context) {
@@ -41,17 +39,10 @@ class _UserProfileViewState extends State<UserProfileView> {
             Padding(
               padding: const EdgeInsets.only(top: 10, right: 5),
               child: IconButton(
-                onPressed: () async {
-                  await authClass.logout();
-                  // ignore: use_build_context_synchronously
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ConnexionPage(),
-                    ),
-                  );
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.logout,
                   color: AppConstantsColor.darkTextColor,
                 ),

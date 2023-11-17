@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:chaussure/authentication/services/auth_services.dart';
-import 'package:chaussure/view/navigation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -15,11 +13,36 @@ class ConnexionPage extends StatefulWidget {
 }
 
 class _ConnexionPageState extends State<ConnexionPage> {
+  // ******************
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-  bool _circular = false;
-  AuthClass authClass = AuthClass();
+  final _form = GlobalKey<FormState>();
+
+  void _submit() async {
+    final isValid = _form.currentState!.validate();
+
+    if (!isValid) {
+      return;
+    }
+    _form.currentState!.save();
+
+    try {
+      final userCredential = await firebaseAuth.signInWithEmailAndPassword(
+          email: emailController.text, password: passwordController.text);
+      print(userCredential);
+    } on FirebaseAuthException catch (error) {
+      if (error.code == "user-not-found") {}
+
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.message ?? "Authentication faild"),
+        ),
+      );
+    }
+  }
+// *******************
 
   @override
   void dispose() {
@@ -73,9 +96,7 @@ class _ConnexionPageState extends State<ConnexionPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       OutlinedButton.icon(
-                        onPressed: () async {
-                          await authClass.googleSignIn(context);
-                        },
+                        onPressed: () {},
                         icon: const Icon(
                           Icons.g_mobiledata_rounded,
                           size: 50,
@@ -93,52 +114,81 @@ class _ConnexionPageState extends State<ConnexionPage> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: SizedBox(
-                  width: width - 70,
-                  height: 55,
-                  child: TextField(
-                    controller: emailController,
-                    decoration: InputDecoration(
-                      labelText: "Email",
-                      labelStyle: const TextStyle(
-                        fontSize: 17,
-                        color: Colors.white,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: const BorderSide(
-                          width: 1,
-                          color: Colors.grey,
+              Form(
+                key: _form,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: SizedBox(
+                        width: width - 70,
+                        height: 55,
+                        child: TextFormField(
+                          controller: emailController,
+                          decoration: InputDecoration(
+                            labelText: "Email",
+                            labelStyle: const TextStyle(
+                              fontSize: 17,
+                              color: Colors.white,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: const BorderSide(
+                                width: 1,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null ||
+                                value.trim().isEmpty ||
+                                !value.contains("@")) {
+                              return "Veillez entrez un email correcte";
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            emailController.text = value!;
+                          },
                         ),
                       ),
                     ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12),
-                child: SizedBox(
-                  width: width - 70,
-                  height: 55,
-                  child: TextField(
-                    controller: passwordController,
-                    decoration: InputDecoration(
-                      labelText: "Password",
-                      labelStyle: const TextStyle(
-                        fontSize: 17,
-                        color: Colors.white,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: const BorderSide(
-                          width: 1,
-                          color: Colors.grey,
+                    Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: SizedBox(
+                        width: width - 70,
+                        height: 55,
+                        child: TextFormField(
+                          controller: passwordController,
+                          decoration: InputDecoration(
+                            labelText: "Password",
+                            labelStyle: const TextStyle(
+                              fontSize: 17,
+                              color: Colors.white,
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                              borderSide: const BorderSide(
+                                width: 1,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                          obscureText: true,
+                          validator: (value) {
+                            if (value == null || value.trim().length < 6) {
+                              return "Le mot de passe doit être supérieur à six(6) cractère.";
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            passwordController.text = value!;
+                          },
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
               const SizedBox(height: 10),
@@ -156,34 +206,7 @@ class _ConnexionPageState extends State<ConnexionPage> {
               ),
               const SizedBox(height: 10),
               GestureDetector(
-                onTap: () async {
-                  setState(() {
-                    _circular = true;
-                  });
-                  try {
-                    UserCredential userCredential =
-                        await FirebaseAuth.instance.signInWithEmailAndPassword(
-                      email: emailController.text,
-                      password: passwordController.text,
-                    );
-
-                    print(userCredential.user?.email);
-                    setState(() {
-                      _circular = false;
-                    });
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MainNavigator()));
-                  } catch (e) {
-                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                    final snackBar = SnackBar(content: Text(e.toString()));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    setState(() {
-                      _circular = false;
-                    });
-                  }
-                },
+                onTap: _submit,
                 child: Container(
                   width: width - 90,
                   height: 60,
@@ -197,18 +220,14 @@ class _ConnexionPageState extends State<ConnexionPage> {
                       ],
                     ),
                   ),
-                  child: Center(
-                    child: _circular
-                        ? const CircularProgressIndicator()
-                        : const Text(
-                            "Se Connecter",
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
+                  child: const Text(
+                    "Se Connecter",
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),

@@ -1,7 +1,7 @@
 import 'package:chaussure/authentication/inscription_page.dart';
-import 'package:chaussure/authentication/services/auth_services.dart';
 import 'package:chaussure/firebase_options.dart';
 import 'package:chaussure/view/navigation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -19,30 +19,19 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Widget currentPage = const InscriptionPage();
-  AuthClass authClass = AuthClass();
-
-  @override
-  void initState() {
-    super.initState();
-    checkLogin();
-  }
-
-  void checkLogin() async {
-    String? token = await authClass.getToken();
-    if (token != null) {
-      setState(() {
-        currentPage = const MainNavigator();
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Chaussure Boutique",
-      home: currentPage,
+      home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return const MainNavigator();
+            }
+            return const InscriptionPage();
+          }),
     );
   }
 }
