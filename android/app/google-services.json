@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "443172859310",
+    "project_id": "chaussure-db520",
+    "storage_bucket": "chaussure-db520.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443172859310:android:b9dfcb1766a4963a4fac3f",
+        "android_client_info": {
+          "package_name": "com.example.chaussure"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443172859310-fsnbjo0m0g9amsfhbkf9eps8g81if216.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARBRkkZakbhEKVDaXd44V1e3gdahA4igw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443172859310-fsnbjo0m0g9amsfhbkf9eps8g81if216.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
