@@ -26,38 +26,37 @@ class _HomeViewState extends State<HomeView> {
     return SafeArea(
       child: Scaffold(
         appBar: HomeAppBar(),
-        body: Column(
-          children: [
-            _categoryView(size),
-            SizedBox(height: size.height * 0.01),
-            _maiShoesList(size),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _morText(),
-                    _bottomSideCategory(size),
-                  ],
-                ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              _categoryView(size),
+              SizedBox(height: size.height * 0.01),
+              _maiShoesList(size),
+              Column(
+                children: [
+                  _morText(),
+                  _bottomSideCategory(size),
+                ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-// ########################### Bottom Side Gategory ############
-  SizedBox _bottomSideCategory(Size size) {
-    return SizedBox(
+// ########################### Les news chaussures ############
+  Widget _bottomSideCategory(Size size) {
+    return Container(
+      color: Colors.black38,
       width: size.width,
-      height: size.height * 0.28,
+      height: size.height * 0.35,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
-        itemCount: availableShoe.length,
+        itemCount: news.length,
         itemBuilder: (context, index) {
-          ShoeModel model = availableShoe[index];
+          ShoeModel model = news[index];
           return GestureDetector(
             onTap: () {
               Navigator.push(
@@ -118,8 +117,9 @@ class _HomeViewState extends State<HomeView> {
                         tag: model.model,
                         child: Image(
                           image: AssetImage(model.imgAdress),
-                          width: size.width * 0.4,
-                          fit: BoxFit.cover,
+                          width: 250,
+                          height: 200,
+                          fit: BoxFit.contain,
                         ),
                       ),
                     ),
@@ -291,15 +291,15 @@ class _HomeViewState extends State<HomeView> {
                         ),
                       ),
                       Positioned(
-                        right: 10,
-                        top: 10,
+                        right: 60,
+                        top: 5,
                         child: Hero(
                           tag: model.imgAdress,
                           child: RotationTransition(
                             turns: const AlwaysStoppedAnimation(-30 / 360),
                             child: SizedBox(
                               width: 250,
-                              height: 330,
+                              height: 300,
                               child: Image(
                                 image: AssetImage(model.imgAdress),
                               ),

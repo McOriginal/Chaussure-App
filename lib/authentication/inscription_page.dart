@@ -45,6 +45,13 @@ class _InscriptionPageState extends State<InscriptionPage> {
   // *************************
 
   @override
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+  }
+
+  @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();

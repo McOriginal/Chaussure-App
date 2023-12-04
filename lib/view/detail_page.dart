@@ -370,9 +370,7 @@ class _DetailsViewState extends State<DetailsView> {
             top: 100,
             left: 30,
             child: Hero(
-              tag: widget.isComeFromMoreSection
-                  ? widget.model.model
-                  : widget.model.imgAdress,
+              tag: widget.model.imgAdress,
               child: RotationTransition(
                 turns: const AlwaysStoppedAnimation(-25 / 360),
                 child: SizedBox(

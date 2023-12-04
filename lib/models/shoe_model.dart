@@ -15,3 +15,19 @@ class ShoeModel {
     required this.modelColor,
   });
 }
+
+class NewShoeModel {
+  String name;
+  String model;
+  double price;
+  String imgAdress;
+  Color modelColor;
+
+  NewShoeModel({
+    required this.name,
+    required this.model,
+    required this.price,
+    required this.imgAdress,
+    required this.modelColor,
+  });
+}

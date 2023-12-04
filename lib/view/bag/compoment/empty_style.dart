@@ -17,7 +17,7 @@ class EmptyState extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text("No shoes added", style: AppThemes.bagEmptyListTitle),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           Text(
             "Once you have added, come back",
             style: TextStyle(color: Colors.grey, fontSize: 18),

@@ -45,6 +45,13 @@ class _ConnexionPageState extends State<ConnexionPage> {
 // *******************
 
   @override
+  void initState() {
+    super.initState();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+  }
+
+  @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();

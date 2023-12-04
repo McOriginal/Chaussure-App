@@ -215,20 +215,21 @@ class _BagViewState extends State<BagView> {
 // Bag AppBar *********************
   SizedBox _bagAppBar(double width, double height) {
     return SizedBox(
-        width: width,
-        height: height / 14,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              "My Bag",
-              style: AppThemes.bagTitle,
-            ),
-            Text(
-              "Total $lengthsOfItemsOnBag Items",
-              style: AppThemes.bagTotalPrice,
-            )
-          ],
-        ));
+      width: width,
+      height: height / 14,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            "My Bag",
+            style: AppThemes.bagTitle,
+          ),
+          Text(
+            "Total $lengthsOfItemsOnBag Items",
+            style: AppThemes.bagTotalPrice,
+          )
+        ],
+      ),
+    );
   }
 }
